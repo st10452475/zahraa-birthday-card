@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Zahraa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #f6ecdd;
+    --cream-deep: #efe0c6;
+    --paper: #fbf5ea;
+    --ink: #4a2f22;
+    --ink-soft: #7a5b46;
+    --red: #a5273a;
+    --red-deep: #7e1c2c;
+    --red-bright: #c23146;
+    --gold: #b8863f;
+    --gold-soft: #d9b877;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    background: radial-gradient(circle at 20% 10%, #fbf2e2 0%, var(--cream) 45%, var(--cream-deep) 100%);
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  .stage{
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  /* ambient texture */
+  .grain{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(165,39,58,0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.5;
+  }
+
+  .float-petal{
+    position: fixed;
+    pointer-events: none;
+    opacity: 0.55;
+    filter: drop-shadow(0 2px 3px rgba(122,27,44,0.08));
+    animation: drift linear infinite;
+  }
+
+  @keyframes drift{
+    from{ transform: translateY(-10vh) rotate(0deg); }
+    to{ transform: translateY(110vh) rotate(340deg); }
+  }
+
+  /* ---------- PAGE 1 : COVER ---------- */
+  .page{
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  #cover.hide{
+    opacity: 0;
+    transform: translateY(-24px) scale(0.97);
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .eyebrow{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: var(--gold);
+    margin: 0 0 6px;
+  }
+
+  .title{
+    font-family: 'Parisienne', cursive;
+    font-size: clamp(52px, 12vw, 78px);
+    font-weight: 400;
+    color: var(--red-deep);
+    margin: 0 0 6px;
+    line-height: 1.15;
+    text-shadow: 0 2px 0 rgba(255,255,255,0.4);
+  }
+
+  .title-rule{
+    width: 120px;
+    height: 1px;
+    margin: 10px auto 40px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* Envelope */
+  .envelope-wrap{
+    perspective: 1400px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+
+  .envelope{
+    position: relative;
+    width: 230px;
+    height: 150px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.35s ease;
+  }
+  .envelope:hover{ transform: translateY(-4px); }
+  .envelope:focus-visible{ outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 6px; }
+
+  .env-back{
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: linear-gradient(160deg, var(--red-bright) 0%, var(--red-deep) 100%);
+    box-shadow: 0 22px 40px -16px rgba(90,20,30,0.45), 0 2px 0 rgba(0,0,0,0.08) inset;
+    z-index: 1;
+  }
+  .env-back::after{
+    content:"";
+    position:absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 62%;
+    background: linear-gradient(150deg, transparent 48%, rgba(0,0,0,0.14) 50%, transparent 52%),
+                linear-gradient(30deg, transparent 48%, rgba(0,0,0,0.14) 50%, transparent 52%);
+    border-radius: 0 0 6px 6px;
+  }
+
+  .env-letter{
+    position: absolute;
+    left: 11%;
+    right: 11%;
+    top: 14px;
+    height: 76%;
+    background: var(--paper);
+    border-radius: 3px;
+    box-shadow: 0 8px 20px rgba(70,20,20,0.22);
+    transform: translateY(44px);
+    transition: transform 0.9s cubic-bezier(.22,1,.36,1) 0.25s, box-shadow 0.9s ease 0.25s;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .env-letter span{
+    font-family: 'Parisienne', cursive;
+    font-size: 30px;
+    color: var(--gold);
+  }
+
+  .env-flap{
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 0;
+    border-left: 115px solid transparent;
+    border-right: 115px solid transparent;
+    border-top: 80px solid var(--red);
+    transform-origin: top center;
+    transform: rotateX(0deg);
+    transition: transform 0.9s cubic-bezier(.65,0,.35,1) 0.05s;
+    z-index: 4;
+    filter: drop-shadow(0 8px 8px rgba(70,15,20,0.18));
+  }
+
+  .env-seal{
+    position: absolute;
+    top: 66px;
+    left: 50%;
+    width: 34px;
+    height: 34px;
+    margin-left: -17px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 70%, #8a6323 100%);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--paper);
+    font-size: 15px;
+    transition: transform 0.5s ease 0.05s, opacity 0.5s ease 0.05s;
+  }
+
+  .envelope.open .env-flap{ transform: rotateX(180deg); }
+  .envelope.open .env-letter{ transform: translateY(-74px) scale(1.03); box-shadow: 0 16px 30px rgba(70,20,20,0.28); }
+  .envelope.open .env-seal{ transform: scale(0) rotate(25deg); opacity: 0; }
+
+  .hint{
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- PAGE 2 : MESSAGE ---------- */
+  #messagePage{
+    position: absolute;
+    opacity: 0;
+    transform: translateY(18px);
+    pointer-events: none;
+  }
+  #messagePage.show{
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .card{
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 46px 38px 38px;
+    box-shadow: 0 30px 60px -20px rgba(90,25,35,0.28);
+    border: 1px solid rgba(184,134,63,0.25);
+    position: relative;
+  }
+
+  .card::before{
+    content:"";
+    position:absolute;
+    top: 14px; left: 14px; right: 14px; bottom: 14px;
+    border: 1px solid rgba(184,134,63,0.35);
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  .card-title{
+    font-family: 'Parisienne', cursive;
+    font-size: 40px;
+    color: var(--red-deep);
+    margin: 0 0 18px;
+  }
+
+  .message-text{
+    font-size: 19px;
+    line-height: 1.75;
+    color: var(--ink);
+    margin: 0 0 10px;
+    text-align: left;
+  }
+
+  .signoff{
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    text-align: right;
+    margin: 22px 0 30px;
+  }
+
+  .surprise-btn{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    color: var(--paper);
+    background: linear-gradient(160deg, var(--red-bright), var(--red-deep));
+    border: none;
+    padding: 13px 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 10px 22px -8px rgba(126,28,44,0.55);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.4s ease;
+  }
+  .surprise-btn:hover{ transform: translateY(-2px); box-shadow: 0 14px 26px -8px rgba(126,28,44,0.6); }
+  .surprise-btn:active{ transform: translateY(0px) scale(0.98); }
+  .surprise-btn:focus-visible{ outline: 2px solid var(--gold); outline-offset: 4px; }
+  .surprise-btn.done{ opacity: 0; pointer-events: none; height: 0; padding: 0; margin: 0; overflow: hidden; }
+
+  .bouquet-wrap{
+    margin-top: 6px;
+    display: flex;
+    justify-content: center;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(14px) scale(0.92);
+    transition: max-height 0.9s cubic-bezier(.22,1,.36,1), opacity 0.9s ease, transform 0.9s cubic-bezier(.22,1,.36,1);
+    overflow: visible;
+  }
+  .bouquet-wrap.show{
+    max-height: 400px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .caption{
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    opacity: 0;
+    transition: opacity 0.8s ease 0.5s;
+  }
+  .bouquet-wrap.show + .caption{ opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition-duration: 0.01ms !important; }
+  }
+
+  @media (max-width: 420px){
+    .card{ padding: 34px 22px 28px; }
+    .envelope{ width: 200px; height: 132px; }
+    .env-flap{ border-left-width: 100px; border-right-width: 100px; border-top-width: 70px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<div class="stage">
+
+  <div class="page" id="cover">
+    <p class="eyebrow">a little something</p>
+    <h1 class="title">For My Zahraa</h1>
+    <div class="title-rule"></div>
+
+    <div class="envelope-wrap">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the envelope to read your birthday message">
+        <div class="env-back"></div>
+        <div class="env-letter"><span>Z</span></div>
+        <div class="env-flap"></div>
+        <div class="env-seal" id="seal">&#10084;</div>
+      </div>
+    </div>
+    <p class="hint">tap the envelope to open</p>
+  </div>
+
+  <div class="page" id="messagePage">
+    <div class="card">
+      <h2 class="card-title">Happy Birthday</h2>
+      <p class="message-text">Zahraa, another year has arrived, and with it, another reason to celebrate the person you are — warm, wonderful, and so easy to love. I hope today wraps you in the same joy you give so freely to everyone around you.</p>
+      <p class="message-text">May this year bring you soft mornings, good news, and moments that make you laugh until it hurts. Here's to you, today and always.</p>
+      <p class="signoff">— with all my love</p>
+
+      <button class="surprise-btn" id="surpriseBtn">Click for Surprise</button>
+
+      <div class="bouquet-wrap" id="bouquetWrap">
+        <svg id="bouquetSvg" width="260" height="240" viewBox="0 0 260 240" aria-hidden="true">
+          <defs>
+            <g id="petal">
+              <ellipse cx="0" cy="-15" rx="10" ry="17" />
+            </g>
+            <g id="bloom">
+              <use href="#petal" transform="rotate(0)" opacity="0.95"/>
+              <use href="#petal" transform="rotate(51)" opacity="0.95"/>
+              <use href="#petal" transform="rotate(102)" opacity="0.95"/>
+              <use href="#petal" transform="rotate(153)" opacity="0.95"/>
+              <use href="#petal" transform="rotate(204)" opacity="0.95"/>
+              <use href="#petal" transform="rotate(255)" opacity="0.95"/>
+              <use href="#petal" transform="rotate(306)" opacity="0.95"/>
+              <circle r="6" opacity="0.85"/>
+            </g>
+          </defs>
+
+          <g stroke="#5c7a4a" stroke-width="3" fill="none" stroke-linecap="round">
+            <path d="M130,225 C120,190 108,150 96,118"/>
+            <path d="M130,225 C126,185 122,148 118,110"/>
+            <path d="M130,225 C132,182 136,142 138,104"/>
+            <path d="M130,225 C138,188 150,152 162,120"/>
+            <path d="M130,225 C144,192 160,158 176,128"/>
+          </g>
+
+          <g fill="#4f7241">
+            <path d="M108,168 C92,160 84,146 88,132 C102,138 112,150 108,168 Z"/>
+            <path d="M152,172 C168,164 176,150 172,136 C158,142 148,154 152,172 Z"/>
+            <path d="M126,148 C112,138 106,122 112,108 C126,116 134,130 126,148 Z"/>
+          </g>
+
+          <g fill="#c23146">
+            <use href="#bloom" transform="translate(96,112) scale(1.05)"/>
+            <use href="#bloom" transform="translate(162,118) scale(0.95)"/>
+            <use href="#bloom" transform="translate(130,80) scale(1.1)"/>
+          </g>
+          <g fill="#fbf7ee" stroke="#e8ddc4" stroke-width="0.6">
+            <use href="#bloom" transform="translate(114,92) scale(0.85)"/>
+            <use href="#bloom" transform="translate(150,90) scale(0.9)"/>
+          </g>
+
+          <path d="M130,225 C118,218 108,222 100,232 M130,225 C142,218 152,222 160,232" stroke="#a5273a" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M130,222 C124,214 128,206 130,200 C132,206 136,214 130,222 Z" fill="#a5273a"/>
+
+          <path d="M96,235 L164,235 L184,240 L76,240 Z" fill="#efe0c6" stroke="#d8c6a1" stroke-width="0.6"/>
+        </svg>
+      </div>
+      <p class="caption">roses, just because</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const envelope = document.getElementById('envelope');
+  const cover = document.getElementById('cover');
+  const messagePage = document.getElementById('messagePage');
+  const surpriseBtn = document.getElementById('surpriseBtn');
+  const bouquetWrap = document.getElementById('bouquetWrap');
+
+  function openEnvelope(){
+    if(envelope.classList.contains('open')) return;
+    envelope.classList.add('open');
+    setTimeout(() => {
+      cover.classList.add('hide');
+      messagePage.classList.add('show');
+    }, 950);
+  }
+
+  envelope.addEventListener('click', openEnvelope);
+  envelope.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      openEnvelope();
+    }
+  });
+
+  surpriseBtn.addEventListener('click', () => {
+    bouquetWrap.classList.add('show');
+    surpriseBtn.classList.add('done');
+  });
+
+  const petals = ['#c23146', '#fbf7ee'];
+  for(let i = 0; i < 10; i++){
+    const p = document.createElement('div');
+    p.className = 'float-petal';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.width = (8 + Math.random() * 6) + 'px';
+    p.style.height = (8 + Math.random() * 6) + 'px';
+    p.style.borderRadius = '60% 40% 55% 45%';
+    p.style.background = petals[i % 2];
+    p.style.animationDuration = (14 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * -20) + 's';
+    document.body.appendChild(p);
+  }
+</script>
+
+</body>
+</html>
