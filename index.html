@@ -302,10 +302,48 @@
     line-height: 1.1;
   }
 
+  .swipe-hint{
+    display: none;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: center;
+    opacity: 0.75;
+    margin: 0;
+  }
+
   @media (max-width: 640px){
-    .message-layout{ justify-content: center; }
-    .polaroid-strip{ flex-direction: row; flex-wrap: wrap; justify-content: center; }
-    .card{ text-align: left; }
+    .message-layout{
+      flex-direction: column;
+      align-items: center;
+    }
+    .card{
+      text-align: left;
+      width: 100%;
+      max-width: 420px;
+    }
+    .polaroid-strip{
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      justify-content: flex-start;
+      width: 100%;
+      max-width: 420px;
+      gap: 16px;
+      padding: 10px 6px 16px;
+      scrollbar-width: none;
+    }
+    .polaroid-strip::-webkit-scrollbar{ display: none; }
+    .polaroid{
+      flex: 0 0 auto;
+      width: 118px;
+      scroll-snap-align: center;
+    }
+    .swipe-hint{
+      display: block;
+    }
   }
 
   .card::before{
@@ -480,6 +518,7 @@
           <p class="polaroid-caption">most</p>
         </div>
       </div>
+      <p class="swipe-hint">swipe to see them all →</p>
     </div>
   </div>
 
