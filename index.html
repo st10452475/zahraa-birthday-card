@@ -6,7 +6,7 @@
 <title>For My Zahraa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --cream: #f6ecdd;
@@ -226,6 +226,16 @@
     pointer-events: auto;
   }
 
+  #messagePage{ max-width: 760px; }
+
+  .message-layout{
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
   .card{
     background: var(--paper);
     border-radius: 14px;
@@ -233,6 +243,69 @@
     box-shadow: 0 30px 60px -20px rgba(90,25,35,0.28);
     border: 1px solid rgba(184,134,63,0.25);
     position: relative;
+    flex: 1 1 320px;
+    max-width: 380px;
+    text-align: left;
+  }
+
+  .polaroid-strip{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex: 0 0 auto;
+    padding-top: 6px;
+  }
+
+  .polaroid{
+    background: #fffdf8;
+    padding: 10px 10px 26px;
+    border-radius: 2px;
+    box-shadow: 0 10px 22px -8px rgba(70,30,20,0.28), 0 1px 0 rgba(0,0,0,0.05);
+    width: 128px;
+    opacity: 0;
+    transform: translateY(14px) rotate(0deg);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.22,1,.36,1);
+  }
+  #messagePage.show .polaroid{ opacity: 1; }
+  #messagePage.show .polaroid:nth-child(1){ transform: rotate(-6deg); transition-delay: 0.15s; }
+  #messagePage.show .polaroid:nth-child(2){ transform: rotate(4deg); transition-delay: 0.3s; }
+  #messagePage.show .polaroid:nth-child(3){ transform: rotate(-3deg); transition-delay: 0.45s; }
+  #messagePage.show .polaroid:nth-child(4){ transform: rotate(5deg); transition-delay: 0.6s; }
+  #messagePage.show .polaroid:nth-child(5){ transform: rotate(-4deg); transition-delay: 0.75s; }
+
+  .polaroid-photo{
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    background: var(--cream-deep);
+  }
+
+  .polaroid-photo.missing{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 8px;
+  }
+
+  .polaroid-caption{
+    font-family: 'Caveat', cursive;
+    font-size: 19px;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-top: 8px;
+    line-height: 1.1;
+  }
+
+  @media (max-width: 640px){
+    .message-layout{ justify-content: center; }
+    .polaroid-strip{ flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    .card{ text-align: left; }
   }
 
   .card::before{
@@ -367,13 +440,46 @@
   </div>
 
   <div class="page" id="messagePage">
-    <div class="card">
-      <h2 class="card-title">Happy Birthday</h2>
-      <p class="message-text">Zahraa , another year has arrived, and with it, another reason to celebrate the person you are — warm, wonderful, and so easy to love. I hope today wraps you in the same joy you give so freely to everyone around you.</p>
-      <p class="message-text">May this year bring you soft mornings, good news, and moments that make you laugh until it hurts. Here's to you, today and always.</p>
-      <p class="signoff">— with all my love</p>
+    <div class="message-layout">
+      <div class="card">
+        <h2 class="card-title">Happy Birthday</h2>
+        <p class="message-text">Zahraa, my love, your existence in this world is my greatest joy. Every single day I get to love you feels like the best gift life has ever given me, and I need you to know I value you far beyond what words can hold. You complete me, completely.</p>
+        <p class="message-text">You occupy a city in my heart, and you're its only population. You bring me joy in the most unintentional ways, and you really do light up my world. You're the brightest star in my galaxy, and I don't know how I got so lucky.</p>
+        <p class="message-text">Thank you for loving me the way you do, for never giving up on us. You're the most beautiful, smartest, kindest, and funniest person I know. You make ordinary days feel special and special days feel extraordinary. You give me butterflies and make me feel so deeply cherished, all at once.</p>
+        <p class="message-text">I love being your best friend. I love our laughs, our silliness, and every version of us we've grown into together. Here's to growing old and fully grey by your side, still laughing at the same things.</p>
+        <p class="message-text">Happy birthday, my heart. I hope today is everything good and soft and joyful, because that's exactly what you deserve, today and every day after.</p>
+        <p class="signoff">— your Muhammad, today and always</p>
 
-      <button class="surprise-btn" id="surpriseBtn">Click for Surprise</button>
+        <button class="surprise-btn" id="surpriseBtn">Click for Surprise</button>
+      </div>
+
+      <div class="polaroid-strip">
+        <div class="polaroid">
+          <img class="polaroid-photo" src="photos/photo1.jpg" alt="Photo 1"
+            onerror="this.classList.add('missing'); this.removeAttribute('src'); this.textContent='add photos/photo1.jpg';">
+          <p class="polaroid-caption">I</p>
+        </div>
+        <div class="polaroid">
+          <img class="polaroid-photo" src="photos/photo2.jpg" alt="Photo 2"
+            onerror="this.classList.add('missing'); this.removeAttribute('src'); this.textContent='add photos/photo2.jpg';">
+          <p class="polaroid-caption">love</p>
+        </div>
+        <div class="polaroid">
+          <img class="polaroid-photo" src="photos/photo3.jpg" alt="Photo 3"
+            onerror="this.classList.add('missing'); this.removeAttribute('src'); this.textContent='add photos/photo3.jpg';">
+          <p class="polaroid-caption">you</p>
+        </div>
+        <div class="polaroid">
+          <img class="polaroid-photo" src="photos/photo4.jpg" alt="Photo 4"
+            onerror="this.classList.add('missing'); this.removeAttribute('src'); this.textContent='add photos/photo4.jpg';">
+          <p class="polaroid-caption">the</p>
+        </div>
+        <div class="polaroid">
+          <img class="polaroid-photo" src="photos/photo5.jpg" alt="Photo 5"
+            onerror="this.classList.add('missing'); this.removeAttribute('src'); this.textContent='add photos/photo5.jpg';">
+          <p class="polaroid-caption">most</p>
+        </div>
+      </div>
     </div>
   </div>
 
