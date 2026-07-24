@@ -82,7 +82,6 @@
     50%{ opacity: 0.9; transform: scale(1.4); }
   }
 
-  /* sparkles on envelope open */
   .sparkle{
     position: absolute;
     width: 7px; height: 7px;
@@ -98,7 +97,6 @@
     100%{ transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
   }
 
-  /* falling petals burst on surprise */
   .burst-petal{
     position: fixed;
     top: -30px;
@@ -356,7 +354,9 @@
     border: 1px solid rgba(184,134,63,0.25);
     position: relative;
     flex: 1 1 320px;
-    max-width: 380px;
+    max-width: 400px;
+    max-height: 78vh;
+    overflow-y: auto;
     text-align: left;
   }
   .card::before{
@@ -375,26 +375,32 @@
     margin: 0 0 18px;
   }
 
-  .message-text, .card-title, .signoff, .surprise-btn{
+  /* generic stagger-in for everything inside the card */
+  .stagger-item{
     opacity: 0;
     transform: translateY(12px);
     transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.22,1,.36,1);
+    transition-delay: var(--stagger-delay, 0s);
   }
-  #messagePage.show .card-title{ opacity:1; transform:none; transition-delay: 0.15s; }
-  #messagePage.show .message-text:nth-of-type(1){ opacity:1; transform:none; transition-delay: 0.35s; }
-  #messagePage.show .message-text:nth-of-type(2){ opacity:1; transform:none; transition-delay: 0.55s; }
-  #messagePage.show .message-text:nth-of-type(3){ opacity:1; transform:none; transition-delay: 0.75s; }
-  #messagePage.show .message-text:nth-of-type(4){ opacity:1; transform:none; transition-delay: 0.95s; }
-  #messagePage.show .message-text:nth-of-type(5){ opacity:1; transform:none; transition-delay: 1.15s; }
-  #messagePage.show .signoff{ opacity:1; transform:none; transition-delay: 1.35s; }
-  #messagePage.show .surprise-btn{ opacity:1; transform:none; transition-delay: 1.55s; }
+  #messagePage.show .stagger-item{
+    opacity: 1;
+    transform: none;
+  }
 
   .message-text{
-    font-size: 19px;
-    line-height: 1.75;
+    font-size: 18px;
+    line-height: 1.7;
     color: var(--ink);
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     text-align: left;
+  }
+
+  .message-highlight{
+    font-family: 'Parisienne', cursive;
+    font-size: 26px;
+    color: var(--red-deep);
+    text-align: center;
+    margin: 20px 0 14px;
   }
 
   .signoff{
@@ -403,7 +409,7 @@
     font-size: 17px;
     color: var(--ink-soft);
     text-align: right;
-    margin: 22px 0 30px;
+    margin: 6px 0 26px;
   }
 
   .surprise-btn{
@@ -421,6 +427,8 @@
     box-shadow: 0 10px 22px -8px rgba(126,28,44,0.55);
     position: relative;
     overflow: hidden;
+    display: block;
+    margin: 0 auto;
   }
   .surprise-btn::after{
     content:"";
@@ -464,15 +472,15 @@
     z-index: 5;
   }
   #messagePage.show .polaroid{ opacity: 1; }
-  #messagePage.show .polaroid:nth-child(1){ transform: rotate(-6deg) scale(1); transition-delay: 0.5s; }
-  #messagePage.show .polaroid:nth-child(2){ transform: rotate(4deg) scale(1); transition-delay: 0.7s; }
-  #messagePage.show .polaroid:nth-child(3){ transform: rotate(-3deg) scale(1); transition-delay: 0.9s; }
-  #messagePage.show .polaroid:nth-child(4){ transform: rotate(5deg) scale(1); transition-delay: 1.1s; }
-  #messagePage.show .polaroid:nth-child(5){ transform: rotate(-4deg) scale(1); transition-delay: 1.3s; }
-  #messagePage.show .polaroid:nth-child(1):hover{ transform: rotate(0deg) scale(1.08); }
-  #messagePage.show .polaroid:nth-child(2):hover{ transform: rotate(0deg) scale(1.08); }
-  #messagePage.show .polaroid:nth-child(3):hover{ transform: rotate(0deg) scale(1.08); }
-  #messagePage.show .polaroid:nth-child(4):hover{ transform: rotate(0deg) scale(1.08); }
+  #messagePage.show .polaroid:nth-child(1){ transform: rotate(-6deg) scale(1); transition-delay: 0.9s; }
+  #messagePage.show .polaroid:nth-child(2){ transform: rotate(4deg) scale(1); transition-delay: 1.1s; }
+  #messagePage.show .polaroid:nth-child(3){ transform: rotate(-3deg) scale(1); transition-delay: 1.3s; }
+  #messagePage.show .polaroid:nth-child(4){ transform: rotate(5deg) scale(1); transition-delay: 1.5s; }
+  #messagePage.show .polaroid:nth-child(5){ transform: rotate(-4deg) scale(1); transition-delay: 1.7s; }
+  #messagePage.show .polaroid:nth-child(1):hover,
+  #messagePage.show .polaroid:nth-child(2):hover,
+  #messagePage.show .polaroid:nth-child(3):hover,
+  #messagePage.show .polaroid:nth-child(4):hover,
   #messagePage.show .polaroid:nth-child(5):hover{ transform: rotate(0deg) scale(1.08); }
 
   .polaroid-photo{
@@ -522,6 +530,7 @@
       text-align: left;
       width: 100%;
       max-width: 420px;
+      max-height: none;
     }
     .polaroid-strip{
       flex-direction: row;
@@ -593,7 +602,6 @@
     70%{ transform: rotate(-1.4deg); }
   }
 
-  /* stems draw themselves */
   .stem{
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
@@ -631,7 +639,6 @@
   #surprisePage.show .leaf:nth-child(6){ animation-delay: 1.4s; }
   @keyframes leafIn{ to{ opacity: 1; transform: scale(1); } }
 
-  /* each rose blooms in */
   .rose-bloom{
     transform-box: fill-box;
     transform-origin: center;
@@ -720,15 +727,19 @@
   <div class="page" id="messagePage">
     <div class="message-layout">
       <div class="card">
-        <h2 class="card-title">Happy Birthday</h2>
-        <p class="message-text">Zahraa Goolam, my love, your existence in this world is my greatest joy. Every single day I get to love you feels like the best gift life has ever given me, and I need you to know I value you far beyond what words can hold. You complete me, completely.</p>
-        <p class="message-text">You occupy a city in my heart, and you're its only population. You bring me joy in the most unintentional ways, and you really do light up my world. You're the brightest star in my galaxy, and I don't know how I got so lucky.</p>
-        <p class="message-text">Thank you for loving me the way you do, for never giving up on us. You're the most beautiful, smartest, kindest, and funniest person I know. You make ordinary days feel special and special days feel extraordinary. You give me butterflies and make me feel so deeply cherished, all at once.</p>
-        <p class="message-text">I love being your best friend. I love our laughs, our silliness, and every version of us we've grown into together. Here's to growing old and fully grey by your side, still laughing at the same things.</p>
-        <p class="message-text">Happy birthday, my heart. I hope today is everything good and soft and joyful, because that's exactly what you deserve, today and every day after.</p>
-        <p class="signoff">— your Muhammad, today and always</p>
+        <h2 class="card-title stagger-item">Happy Birthday</h2>
+        <p class="message-text stagger-item">happy birthday to my favourite person in the whole world ❤️</p>
+        <p class="message-text stagger-item">it's crazy to think that someone as special as you exists, and somehow i get to call you my girl. i don't think i'll ever stop being grateful for having you in my life because meeting you changed everything for me. before you, i never knew a person could become my home, but with you, no matter how far apart we are, i always feel like i'm exactly where i'm supposed to be.</p>
+        <p class="message-text stagger-item">you've brought so much peace into my life without even trying. you've taught me what it feels like to be understood, cared for, and loved in a way that's so genuine. every conversation, every laugh, every random voice note, every little moment we've shared has become a memory i hold close to my heart. even the normal days become my favourite because they're spent with you.</p>
+        <p class="message-text stagger-item">what i admire most about you isn't just how beautiful you are, even though i could spend forever talking about that. it's your heart. the way you care so deeply about the people you love, the way you always give your all, the way you stay strong even when life gets difficult. you inspire me more than you'll ever realise, and you make me want to become a better man every single day.</p>
+        <p class="message-text stagger-item">i hope this year is gentle with you. i hope it brings you happiness that lasts, opportunities that excite you, and moments that remind you just how loved you are. whenever life feels heavy, i hope you remember that you'll never have to carry it alone. i'll always be here, cheering you on, praying for you, and standing beside you through everything.</p>
+        <p class="message-text stagger-item">my favourite dream is the one where i get to spend the rest of my life with you. i can't wait for the day distance is no longer part of our story, when birthdays mean waking up next to you, stealing the first hug of the day, and reminding you in person how loved you are.</p>
+        <p class="message-text stagger-item">until then, i'll keep choosing you every single day, just like i always will.</p>
+        <p class="message-text stagger-item">thank you for being my safe place, my biggest blessing, my best friend, and the greatest love i've ever known.</p>
+        <p class="message-highlight stagger-item">happy birthday, my zahraa.</p>
+        <p class="signoff stagger-item">i love you more than you'll ever truly know, always and forever ❤️</p>
 
-        <button class="surprise-btn" id="surpriseBtn">Click for a Surprise</button>
+        <button class="surprise-btn stagger-item" id="surpriseBtn">Click for a Surprise</button>
       </div>
 
       <div class="polaroid-strip">
@@ -860,6 +871,11 @@
   const surpriseBtn = document.getElementById('surpriseBtn');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* stagger delays for every fade-in element inside the card, in DOM order */
+  document.querySelectorAll('.stagger-item').forEach((el, i) => {
+    el.style.setProperty('--stagger-delay', (0.15 + i * 0.16) + 's');
+  });
+
   /* ambient drifting petals */
   const petalColors = ['#c23146', '#fbf7ee', '#d9b877'];
   for(let i = 0; i < 14; i++){
@@ -886,7 +902,6 @@
     document.body.appendChild(t);
   }
 
-  /* sparkle burst around the envelope */
   function sparkleBurst(){
     if(reduceMotion) return;
     for(let i = 0; i < 16; i++){
@@ -903,7 +918,6 @@
     }
   }
 
-  /* falling petal celebration */
   function petalRain(){
     if(reduceMotion) return;
     const colors = ['#c23146', '#fbf7ee', '#e8a7b0', '#d9b877'];
